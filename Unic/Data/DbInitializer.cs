@@ -1,9 +1,9 @@
-﻿using Unic.Data;
-using Unic.Models;
+﻿using Unic.Models;
 using System;
 using System.Linq;
+using Unic.Data;
 
-namespace ContosoUniversity.Data
+namespace UnicData
 {
     public static class DbInitializer
     {
