@@ -12,9 +12,9 @@ namespace Unic.Pages.Students
 {
     public class DetailsModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public DetailsModel(Unic.Data.SchoolContext context)
+        public DetailsModel(SchoolContext context)
         {
             _context = context;
         }

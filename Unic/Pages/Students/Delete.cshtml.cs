@@ -12,9 +12,9 @@ namespace Unic.Pages.Students
 {
     public class DeleteModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public DeleteModel(Unic.Data.SchoolContext context)
+        public DeleteModel(SchoolContext context)
         {
             _context = context;
         }

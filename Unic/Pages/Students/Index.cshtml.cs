@@ -12,9 +12,9 @@ namespace Unic.Pages.Students
 {
     public class IndexModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public IndexModel(Unic.Data.SchoolContext context)
+        public IndexModel(SchoolContext context)
         {
             _context = context;
         }
