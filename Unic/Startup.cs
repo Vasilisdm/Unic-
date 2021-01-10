@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Unic.Data;
+using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Unic
 {
@@ -20,6 +22,10 @@ namespace Unic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            int MyMaxModelBindingCollectionSize = 100;
+            services.Configure<MvcOptions>(options =>
+                   options.MaxModelBindingCollectionSize = MyMaxModelBindingCollectionSize);
+
             services.AddRazorPages();
 
             services.AddDbContext<SchoolContext>(options =>
