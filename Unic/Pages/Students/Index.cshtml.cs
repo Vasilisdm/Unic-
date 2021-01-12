@@ -27,12 +27,12 @@ namespace Unic.Pages.Students
 
         public PaginatedList<Student> Students { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string searchString, string currentFilter, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder,
+        string currentFilter, string searchString, int? pageIndex)
         {
             CurrentSort = sortOrder;
             NameSort = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             DateSort = sortOrder == "Date" ? "date_desc" : "Date";
-
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -70,7 +70,9 @@ namespace Unic.Pages.Students
             }
 
             int pageSize = 3;
-            Students = await PaginatedList<Student>.CreateAsync(studentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            Students = await PaginatedList<Student>.CreateAsync(
+                studentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+
         }
     }
 }
