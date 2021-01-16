@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Unic.Models
 {
     public enum Grade
@@ -11,6 +12,8 @@ namespace Unic.Models
         public int ID { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
+
+        [DisplayFormat(NullDisplayText = "No grade")]
         public Grade? Grade { get; set; }
 
         public Course Course { get; set; }
