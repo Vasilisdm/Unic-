@@ -32,7 +32,7 @@ namespace Unic.Models
             get => LastName + " " + FirstMidName;
         }
 
-        public ICollection<CourseAssignment> CourseAssignemetns { get; set; }
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
         public OfficeAssignment OfficeAssignment { get; set; }
     }
 }
