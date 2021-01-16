@@ -105,13 +105,13 @@ namespace UnicData
             var officeAssignments = new OfficeAssignment[]
             {
                 new OfficeAssignment {
-                    ID = instructors.Single( i => i.LastName == "Fakhouri").ID,
+                    InstructorID = instructors.Single( i => i.LastName == "Fakhouri").ID,
                     Location = "Smith 17" },
                 new OfficeAssignment {
-                    ID = instructors.Single( i => i.LastName == "Harui").ID,
+                    InstructorID = instructors.Single( i => i.LastName == "Harui").ID,
                     Location = "Gowan 27" },
                 new OfficeAssignment {
-                    ID = instructors.Single( i => i.LastName == "Kapoor").ID,
+                    InstructorID = instructors.Single( i => i.LastName == "Kapoor").ID,
                     Location = "Thompson 304" },
             };
 

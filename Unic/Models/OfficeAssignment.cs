@@ -4,7 +4,8 @@ namespace Unic.Models
 {
     public class OfficeAssignment
     {
-        public int ID { get; set; }
+        [Key]
+        public int InstructorID { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Office Location")]
