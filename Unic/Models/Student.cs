@@ -11,7 +11,7 @@ namespace Unic.Models
 
         [Required]
         [StringLength(50)]
-        [Display(Name = "LastName")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
@@ -28,7 +28,10 @@ namespace Unic.Models
         [Display(Name = "Full Name")]
         public string FullName
         {
-            get => LastName + " " + FirstMidName;
+            get
+            {
+                return LastName + ", " + FirstMidName;
+            }
         }
 
         public ICollection<Enrollment> Enrollments { get; set; }

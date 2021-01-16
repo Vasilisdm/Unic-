@@ -9,7 +9,7 @@ namespace Unic.Models
 
     public class Enrollment
     {
-        public int ID { get; set; }
+        public int EnrollmentID { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
 

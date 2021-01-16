@@ -14,7 +14,6 @@ namespace Unic.Models
         [StringLength(50)]
         public string LastName { get; set; }
 
-
         [Required]
         [Column("FirstName")]
         [Display(Name = "First Name")]
@@ -29,7 +28,7 @@ namespace Unic.Models
         [Display(Name = "Full Name")]
         public string FullName
         {
-            get => LastName + " " + FirstMidName;
+            get { return LastName + ", " + FirstMidName; }
         }
 
         public ICollection<CourseAssignment> CourseAssignments { get; set; }
