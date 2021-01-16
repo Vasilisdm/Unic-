@@ -13,7 +13,7 @@ namespace Unic.Models
         public string Name { get; set; }
 
         [DataType(DataType.Currency)]
-        [Column("Money")]
+        [Column(TypeName = "money")]
         public decimal Budget { get; set; }
 
         [DataType(DataType.Date)]
