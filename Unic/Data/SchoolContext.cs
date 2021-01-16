@@ -30,6 +30,9 @@ namespace Unic.Data
 
             modelBuilder.Entity<CourseAssignment>()
                .HasKey(c => new { c.CourseID, c.InstructorID });
+
+            modelBuilder.Entity<Enrollment>()
+               .HasKey(e => new { e.CourseID, e.StudentID, e.EnrollmentID });
         }
     }
 }
