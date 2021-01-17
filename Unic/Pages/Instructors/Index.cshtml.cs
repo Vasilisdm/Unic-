@@ -1,26 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Unic.Models;
+using Unic.Models.SchoolViewModels; 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Unic.Data;
-using Unic.Models;
-using Unic.Models.SchoolViewModels;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Unic.Pages.Instructors
 {
     public class IndexModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly Data.SchoolContext _context;
 
-        public IndexModel(Unic.Data.SchoolContext context)
+        public IndexModel(Data.SchoolContext context)
         {
             _context = context;
         }
 
-        public InstructorIndexData InstructorData { get;set; }
+        public InstructorIndexData InstructorData { get; set; }
         public int InstructorID { get; set; }
         public int CourseID { get; set; }
 
@@ -45,14 +41,14 @@ namespace Unic.Pages.Instructors
             if (id != null)
             {
                 InstructorID = id.Value;
-                var instructor = InstructorData.Instructors.Where(i => i.ID == id.Value).Single();
+                Instructor instructor = InstructorData.Instructors.Where(i => i.ID == id.Value).Single();
                 InstructorData.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
 
             if (courseID != null)
             {
-                courseID = courseID.Value;
-                var selectedCourse = InstructorData.Courses.Where(c => c.CourseID == courseID.Value).Single();
+                CourseID = courseID.Value;
+                var selectedCourse = InstructorData.Courses.Where(x => x.CourseID == courseID).Single();
                 InstructorData.Enrollments = selectedCourse.Enrollments;
             }
         }
