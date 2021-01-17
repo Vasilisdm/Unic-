@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Unic.Data;
 using Unic.Models;
+using Unic.Models.SchoolViewModels;
 
 namespace Unic.Pages.Courses
 {
@@ -19,14 +20,20 @@ namespace Unic.Pages.Courses
             _context = context;
         }
 
-        public IList<Course> Courses { get;set; }
+        public IList<CourseViewModel> Courses { get;set; }
 
         public async Task OnGetAsync()
         {
+
             Courses = await _context.Courses
-                .Include(c => c.Department)
-                .AsNoTracking()
-                .ToListAsync();
+                                    .Select(c => new CourseViewModel
+                                    {
+                                        CourseID = c.CourseID,
+                                        Title = c.Title,
+                                        Credits = c.Credits,
+                                        DepartmentName = c.Department.Name
+                                    })
+                                    .ToListAsync();
         }
     }
 }

@@ -21,4 +21,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Pages\Courses\Edit.cshtml" />
+  </ItemGroup>
 </Project>
