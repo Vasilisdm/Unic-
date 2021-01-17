@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Unic.Data;
 using Unic.Models;
+using Unic.Models.SchoolViewModels;
 
 namespace Unic.Pages.Instructors
 {
@@ -19,11 +20,41 @@ namespace Unic.Pages.Instructors
             _context = context;
         }
 
-        public IList<Instructor> Instructor { get;set; }
+        public InstructorIndexData InstructorData { get;set; }
+        public int InstructorID { get; set; }
+        public int CourseID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? courseID)
         {
-            Instructor = await _context.Instructors.ToListAsync();
+            InstructorData = new InstructorIndexData
+            {
+                Instructors = await _context.Instructors
+                                            .Include(i => i.OfficeAssignment)
+                                            .Include(i => i.CourseAssignments)
+                                                .ThenInclude(ca => ca.Course)
+                                                    .ThenInclude(c => c.Department)
+                                            .Include(i => i.CourseAssignments)
+                                                .ThenInclude(ca => ca.Course)
+                                                    .ThenInclude(c => c.Enrollments)
+                                                        .ThenInclude(e => e.Student)
+                                            .AsNoTracking()
+                                            .OrderBy(i => i.LastName)
+                                            .ToListAsync()
+            };
+
+            if (id != null)
+            {
+                InstructorID = id.Value;
+                var instructor = InstructorData.Instructors.Where(i => i.ID == id.Value).Single();
+                InstructorData.Courses = instructor.CourseAssignments.Select(s => s.Course);
+            }
+
+            if (courseID != null)
+            {
+                courseID = courseID.Value;
+                var selectedCourse = InstructorData.Courses.Where(c => c.CourseID == courseID.Value).Single();
+                InstructorData.Enrollments = selectedCourse.Enrollments;
+            }
         }
     }
 }
