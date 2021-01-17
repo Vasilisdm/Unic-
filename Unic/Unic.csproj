@@ -10,6 +10,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Models\SchoolViewModels\" />
     <Folder Include="Pages\Courses\" />
+    <Folder Include="Pages\Instructors\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
