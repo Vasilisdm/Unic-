@@ -41,14 +41,14 @@ namespace Unic.Pages.Instructors
             if (id != null)
             {
                 InstructorID = id.Value;
-                Instructor instructor = InstructorData.Instructors.Where(i => i.ID == id.Value).Single();
+                Instructor instructor = InstructorData.Instructors.Single(i => i.ID == id.Value);
                 InstructorData.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
 
             if (courseID != null)
             {
                 CourseID = courseID.Value;
-                var selectedCourse = InstructorData.Courses.Where(x => x.CourseID == courseID).Single();
+                var selectedCourse = InstructorData.Courses.Single(x => x.CourseID == courseID);
                 InstructorData.Enrollments = selectedCourse.Enrollments;
             }
         }
