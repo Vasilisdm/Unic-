@@ -29,11 +29,11 @@ namespace Unic.Pages.Instructors
                                             .Include(i => i.CourseAssignments)
                                                 .ThenInclude(ca => ca.Course)
                                                     .ThenInclude(c => c.Department)
-                                            .Include(i => i.CourseAssignments)
-                                                .ThenInclude(ca => ca.Course)
-                                                    .ThenInclude(c => c.Enrollments)
-                                                        .ThenInclude(e => e.Student)
-                                            .AsNoTracking()
+                                            //.Include(i => i.CourseAssignments)
+                                            //    .ThenInclude(ca => ca.Course)
+                                            //        .ThenInclude(c => c.Enrollments)
+                                            //            .ThenInclude(e => e.Student)
+                                            //.AsNoTracking()
                                             .OrderBy(i => i.LastName)
                                             .ToListAsync()
             };
@@ -49,6 +49,13 @@ namespace Unic.Pages.Instructors
             {
                 CourseID = courseID.Value;
                 var selectedCourse = InstructorData.Courses.Single(x => x.CourseID == courseID);
+
+                await _context.Entry(selectedCourse).Collection(c => c.Enrollments).LoadAsync();
+                foreach (var enrollment in selectedCourse.Enrollments)
+                {
+                    await _context.Entry(enrollment).Reference(e => e.Student).LoadAsync();
+                }
+
                 InstructorData.Enrollments = selectedCourse.Enrollments;
             }
         }
