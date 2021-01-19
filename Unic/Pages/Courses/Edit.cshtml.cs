@@ -36,7 +36,7 @@ namespace Unic.Pages.Courses
             PopulateDepartmentsDropDownList(_context, Course.DepartmentID);
             return Page();
         }
-    
+
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
@@ -64,5 +64,6 @@ namespace Unic.Pages.Courses
 
             PopulateDepartmentsDropDownList(_context, courseToUpdate.CourseID);
             return Page();
+        }
     }
 }
