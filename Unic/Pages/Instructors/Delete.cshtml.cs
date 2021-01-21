@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Unic.Data;
-using Unic.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Unic.Pages.Instructors
 {
@@ -45,14 +42,25 @@ namespace Unic.Pages.Instructors
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors.FindAsync(id);
+            Instructor = await _context.Instructors
+                .Include(i => i.CourseAssignments)
+                .SingleAsync(i => i.ID == id);
+                
 
             if (Instructor != null)
             {
-                _context.Instructors.Remove(Instructor);
-                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
 
+            var departments = await _context.Departments
+                .Where(d => d.InstructorID == id)
+                .ToListAsync();
+
+            departments.ForEach(d => d.InstructorID = null);
+
+            _context.Instructors.Remove(Instructor);
+
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
     }
