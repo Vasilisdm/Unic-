@@ -1,35 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Unic.Data;
+﻿using Unic.Data;
 using Unic.Models;
 using Unic.Models.SchoolViewModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Unic.Pages.Instructors
 {
     public class InstructorCoursesPageModel : PageModel
     {
+
         public List<AssignedCourseData> AssignedCourseDataList;
 
-        public void PopulateAssignedCourseData(SchoolContext context, Instructor instructor)
+        public void PopulateAssignedCourseData(SchoolContext context,
+                                               Instructor instructor)
         {
             var allCourses = context.Courses;
-            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(ca => ca.CourseID));
-
+            var instructorCourses = new HashSet<int>(
+                instructor.CourseAssignments.Select(c => c.CourseID));
             AssignedCourseDataList = new List<AssignedCourseData>();
             foreach (var course in allCourses)
             {
                 AssignedCourseDataList.Add(new AssignedCourseData
                 {
-                    CourseId = course.CourseID,
+                    CourseID = course.CourseID,
                     Title = course.Title,
                     Assigned = instructorCourses.Contains(course.CourseID)
                 });
             }
         }
 
-        public void UpdateInstructorCourses(SchoolContext context, Instructor instructorToUpdate,
-            string[] selectedCourses)
+        public void UpdateInstructorCourses(SchoolContext context,
+            string[] selectedCourses, Instructor instructorToUpdate)
         {
             if (selectedCourses == null)
             {
@@ -38,9 +40,8 @@ namespace Unic.Pages.Instructors
             }
 
             var selectedCoursesHS = new HashSet<string>(selectedCourses);
-            var instructorCourses = new HashSet<int>(instructorToUpdate.CourseAssignments
-                                                    .Select(ca => ca.CourseID));
-
+            var instructorCourses = new HashSet<int>
+                (instructorToUpdate.CourseAssignments.Select(c => c.Course.CourseID));
             foreach (var course in context.Courses)
             {
                 if (selectedCoursesHS.Contains(course.CourseID.ToString()))
@@ -59,10 +60,10 @@ namespace Unic.Pages.Instructors
                 {
                     if (instructorCourses.Contains(course.CourseID))
                     {
-                        CourseAssignment courseToRemove = instructorToUpdate
-                                                          .CourseAssignments
-                                                          .SingleOrDefault(ca => ca.CourseID == course.CourseID);
-
+                        CourseAssignment courseToRemove
+                            = instructorToUpdate
+                                .CourseAssignments
+                                .SingleOrDefault(i => i.CourseID == course.CourseID);
                         context.Remove(courseToRemove);
                     }
                 }

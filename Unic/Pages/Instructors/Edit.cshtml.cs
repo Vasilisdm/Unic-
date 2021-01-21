@@ -1,16 +1,16 @@
-using System.Threading.Tasks;
+using Unic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Unic.Data;
-using Unic.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Unic.Pages.Instructors
 {
     public class EditModel : InstructorCoursesPageModel
     {
-        private readonly SchoolContext _context;
+        private readonly Data.SchoolContext _context;
 
-        public EditModel(SchoolContext context)
+        public EditModel(Data.SchoolContext context)
         {
             _context = context;
         }
@@ -26,17 +26,15 @@ namespace Unic.Pages.Instructors
             }
 
             Instructor = await _context.Instructors
-                                       .Include(i => i.OfficeAssignment)
-                                       .Include(i => i.CourseAssignments)
-                                            .ThenInclude(ca => ca.Course)
-                                       .AsNoTracking()
-                                       .FirstOrDefaultAsync(m => m.ID == id);
+                .Include(i => i.OfficeAssignment)
+                .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Instructor == null)
             {
                 return NotFound();
             }
-
             PopulateAssignedCourseData(_context, Instructor);
             return Page();
         }
@@ -49,10 +47,10 @@ namespace Unic.Pages.Instructors
             }
 
             var instructorToUpdate = await _context.Instructors
-                                                   .Include(i => i.OfficeAssignment)
-                                                   .Include(i => i.CourseAssignments)
-                                                        .ThenInclude(ca => ca.Course)
-                                                   .FirstOrDefaultAsync(i => i.ID == id);
+                .Include(i => i.OfficeAssignment)
+                .Include(i => i.CourseAssignments)
+                    .ThenInclude(i => i.Course)
+                .FirstOrDefaultAsync(s => s.ID == id);
 
             if (instructorToUpdate == null)
             {
@@ -61,23 +59,20 @@ namespace Unic.Pages.Instructors
 
             if (await TryUpdateModelAsync<Instructor>(
                 instructorToUpdate,
-                "Instrcutor",
-                i => i.FirstMidName,
-                i => i.LastName,
-                i => i.HireDate,
-                i => i.OfficeAssignment))
+                "Instructor",
+                i => i.FirstMidName, i => i.LastName,
+                i => i.HireDate, i => i.OfficeAssignment))
             {
-                if (string.IsNullOrEmpty(instructorToUpdate.OfficeAssignment?.Location))
+                if (String.IsNullOrWhiteSpace(
+                    instructorToUpdate.OfficeAssignment?.Location))
                 {
                     instructorToUpdate.OfficeAssignment = null;
                 }
-
-                UpdateInstructorCourses(_context, instructorToUpdate, selectedCourses);
+                UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
                 await _context.SaveChangesAsync();
-                return Page();
+                return RedirectToPage("./Index");
             }
-
-            UpdateInstructorCourses(_context, instructorToUpdate, selectedCourses);
+            UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
             PopulateAssignedCourseData(_context, instructorToUpdate);
             return Page();
         }
