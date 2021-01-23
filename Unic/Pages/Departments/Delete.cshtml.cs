@@ -1,17 +1,16 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Unic.Data;
+using System.Threading.Tasks;
 using Unic.Models;
 
 namespace Unic.Pages.Departments
 {
     public class DeleteModel : PageModel
     {
-        private readonly SchoolContext _context;
+        private readonly Data.SchoolContext _context;
 
-        public DeleteModel(SchoolContext context)
+        public DeleteModel(Data.SchoolContext context)
         {
             _context = context;
         }
@@ -20,17 +19,17 @@ namespace Unic.Pages.Departments
         public Department Department { get; set; }
         public string ConcurrencyErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id, bool? concurrencyError)
+        public async Task<IActionResult> OnGetAsync(int id, bool? concurrencyError)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             Department = await _context.Departments
                 .Include(d => d.Administrator)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.DepartmentID == id);
+
+            if (Department == null)
+            {
+                return NotFound();
+            }
 
             if (concurrencyError.GetValueOrDefault())
             {
@@ -43,21 +42,25 @@ namespace Unic.Pages.Departments
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             try
             {
-                if (await _context.Departments.AnyAsync(d => d.DepartmentID == id))
+                if (await _context.Departments.AnyAsync(
+                    m => m.DepartmentID == id))
                 {
+                    // Department.rowVersion value is from when the entity
+                    // was fetched. If it doesn't match the DB, a
+                    // DbUpdateConcurrencyException exception is thrown.
                     _context.Departments.Remove(Department);
                     await _context.SaveChangesAsync();
                 }
-
                 return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                return RedirectToPage("./Delete", new { concurrencyError = true, id });
+                return RedirectToPage("./Delete",
+                    new { concurrencyError = true, id = id });
             }
         }
     }
