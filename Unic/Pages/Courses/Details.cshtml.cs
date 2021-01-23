@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,9 +9,9 @@ namespace Unic.Pages.Courses
 {
     public class DetailsModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public DetailsModel(Unic.Data.SchoolContext context)
+        public DetailsModel(SchoolContext context)
         {
             _context = context;
         }

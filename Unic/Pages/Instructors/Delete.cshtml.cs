@@ -1,4 +1,4 @@
-using ContosoUniversity.Models;
+using Unic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +9,9 @@ namespace Unic.Pages.Instructors
 {
     public class DeleteModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly Data.SchoolContext _context;
 
-        public DeleteModel(Unic.Data.SchoolContext context)
+        public DeleteModel(Data.SchoolContext context)
         {
             _context = context;
         }

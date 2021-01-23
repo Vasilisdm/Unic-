@@ -1,21 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Unic.Data;
-using Unic.Models;
 using Unic.Models.SchoolViewModels;
 
 namespace Unic.Pages.Courses
 {
     public class IndexModel : PageModel
     {
-        private readonly Unic.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public IndexModel(Unic.Data.SchoolContext context)
+        public IndexModel(SchoolContext context)
         {
             _context = context;
         }
